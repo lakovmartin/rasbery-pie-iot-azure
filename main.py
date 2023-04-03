@@ -1,0 +1,39 @@
+import time
+import json
+import Adafruit_DHT
+from azure.iot.device import IoTHubDeviceClient, Message
+
+# DHT22 sensor pin
+DHT_SENSOR_PIN = 4
+
+# Azure IoT Hub device connection string
+DEVICE_CONNECTION_STRING = "{your device connection string here}"
+
+def send_to_azure_iot_hub(temp, humidity):
+    try:
+        # create device client
+        client = IoTHubDeviceClient.create_from_connection_string(DEVICE_CONNECTION_STRING)
+
+        # create message
+        message = Message(json.dumps({"temperature": temp, "humidity": humidity}))
+
+        # send message
+        print("Sending message to Azure IoT Hub...")
+        client.send_message(message)
+        print("Message sent successfully.")
+    except Exception as e:
+        print("Error sending message: ", e)
+
+while True:
+    try:
+        # read temperature and humidity data from DHT22 sensor
+        humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, DHT_SENSOR_PIN)
+
+        # send data to Azure IoT Hub
+        send_to_azure_iot_hub(temperature, humidity)
+
+        # wait for 10 seconds before sending next data
+        time.sleep(10)
+
+    except Exception as e:
+        print("Error reading data from sensor: ", e)
