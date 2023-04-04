@@ -7,3 +7,5 @@ services:
       - /dev/gpiomem:/dev/gpiomem
     environment:
       - DEVICE_CONNECTION_STRING=<your device connection string>
+
+# docker-compose up --build
