@@ -8,4 +8,5 @@ services:
     environment:
       - DEVICE_CONNECTION_STRING=<your device connection string>
 
-# docker-compose up --build
+# docker-compose build
+# docker-compose up -d

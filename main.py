@@ -1,4 +1,5 @@
 import time
+import os
 import json
 import Adafruit_DHT
 from azure.iot.device import IoTHubDeviceClient, Message
@@ -7,7 +8,7 @@ from azure.iot.device import IoTHubDeviceClient, Message
 DHT_SENSOR_PIN = 4
 
 # Azure IoT Hub device connection string
-DEVICE_CONNECTION_STRING = "{your device connection string here}"
+connection_string = os.getenv("DEVICE_CONNECTION_STRING")
 
 def send_to_azure_iot_hub(temp, humidity):
     try:
