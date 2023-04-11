@@ -35,4 +35,4 @@ sudo chmod +x /usr/local/bin/docker-compose
 echo "Docker version:"
 docker --version
 echo "Docker Compose version:"
-docker-compose --version
+docker compose --version
