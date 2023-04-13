@@ -14,9 +14,12 @@ COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
+# Install Adafruit DHT module
+RUN pip3 install Adafruit_DHT
+
 COPY main.py .
 
 # Set log level to INFO
 ENV LOG_LEVEL=INFO
 
-CMD [ "python", "./main.py" ]
+CMD [ "python3", "./main.py" ]
