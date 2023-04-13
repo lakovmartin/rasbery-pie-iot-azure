@@ -5,16 +5,7 @@ import Adafruit_DHT
 from azure.iot.device import IoTHubDeviceClient, Message
 import logging
 
-# Set the logging configuration
-logging.basicConfig(
-    level=logging.INFO, 
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-
-# Use the logger to output logs
-logging.info('This is an info log')
-logging.warning('This is a warning log')
-logging.error('This is an error log')
+logging.basicConfig(level=logging.DEBUG)
 
 # DHT22 sensor pin
 DHT_SENSOR_PIN = 21
