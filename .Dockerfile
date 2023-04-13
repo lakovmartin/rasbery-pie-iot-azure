@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster
+FROM balenalib/raspberry-pi-python
 
 WORKDIR /app
 
@@ -9,6 +9,10 @@ RUN apt-get update \
         python-dev \
         python-openssl \
     && rm -rf /var/lib/apt/lists/*
+
+# Install required packages for GPIO access
+RUN apt-get update && \
+    apt-get install -y python-rpi.gpio
 
 COPY requirements.txt .
 
