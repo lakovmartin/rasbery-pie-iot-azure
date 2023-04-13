@@ -5,7 +5,7 @@ import Adafruit_DHT
 from azure.iot.device import IoTHubDeviceClient, Message
 
 # DHT22 sensor pin
-DHT_SENSOR_PIN = 4
+DHT_SENSOR_PIN = 21
 
 # Azure IoT Hub device connection string
 connection_string = os.getenv("DEVICE_CONNECTION_STRING")
