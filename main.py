@@ -5,7 +5,7 @@ from azure.iot.device import IoTHubDeviceClient, Message
 import Adafruit_DHT
 
 # Read the IoT Hub device connection string from an environment variable.
-CONNECTION_STRING = os.environ["IOTHUB_DEVICE_CONNECTION_STRING"]
+CONNECTION_STRING = os.environ["CONNECTION_STRING"]
 
 # Set the DHT22 sensor pin number.
 SENSOR_PIN = 4
