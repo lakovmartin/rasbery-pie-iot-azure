@@ -1,32 +1,30 @@
-import random  
-import Adafruit_DHT
 import time
-from azure.iot.device import IoTHubDeviceClient, Message  
+import Adafruit_DHT
+from azure.iot.device import IoTHubDeviceClient, Message
 
-sensor = Adafruit_DHT.DHT22
-pin = 21
+CONNECTION_STRING = "<your Azure IoT Hub device connection string>"
+DHT_SENSOR = Adafruit_DHT.DHT22
+DHT_PIN = 4
 
-CONNECTION_STRING = "HostName=xxxxxxxx;DeviceId=xxxxxx;SharedAccessKey=xxxxxxxxxxxxxxxxxxx"  
+def get_dht_data():
+    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN)
+    if humidity is not None and temperature is not None:
+        return {"temperature": temperature, "humidity": humidity}
+    else:
+        return None
 
-MSG_SND = '{{"temperature": {temperature},"humidity": {humidity}}}'  
-while True:
-    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-    def iothub_client_init():  
-        client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)  
-        return client  
-    def iothub_client_telemetry_sample_run():  
-        try:  
-            client = iothub_client_init()  
-            print ( "Sending data to IoT Hub, press Ctrl-C to exit" )  
-            while True:  
-                msg_txt_formatted = MSG_SND.format(temperature=temperature, humidity=humidity)  
-                message = Message(msg_txt_formatted)  
-                print( "Sending message: {}".format(message) )  
-                client.send_message(message)  
-                print ( "Message successfully sent" )  
-                time.sleep(3)  
-        except KeyboardInterrupt:  
-            print ( "IoTHubClient stopped" )  
-    if __name__ == '__main__':  
-        print ( "Press Ctrl-C to exit" )  
-        iothub_client_telemetry_sample_run()
+def send_telemetry(device_client, data):
+    message = Message(str(data))
+    device_client.send_message(message)
+    print(f"Sent telemetry: {data}")
+
+def main():
+    device_client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
+    while True:
+        data = get_dht_data()
+        if data:
+            send_telemetry(device_client, data)
+        time.sleep(5)
+
+if __name__ == '__main__':
+    main()
