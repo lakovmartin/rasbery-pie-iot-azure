@@ -1,10 +1,22 @@
 import time
+import os
 import Adafruit_DHT
 from azure.iot.device import IoTHubDeviceClient, Message
+import logging
 
-CONNECTION_STRING = "<your Azure IoT Hub device connection string>"
+# Define logging level. 
+logging.basicConfig(level=logging.INFO)
+
+# Azure IoT Hub device connection string
+CONNECTION_STRING = os.getenv("CONNECTION_STRING")
+
+# DHT Sensor Type
 DHT_SENSOR = Adafruit_DHT.DHT22
-DHT_PIN = 4
+
+# DHT GPIO PIN
+DHT_PIN = 21
+
+# Read Data from GPIO Pin and validate
 
 def get_dht_data():
     humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN)
@@ -12,6 +24,8 @@ def get_dht_data():
         return {"temperature": temperature, "humidity": humidity}
     else:
         return None
+
+# If data read succeeds then send it to Azure IOT hub.        
 
 def send_telemetry(device_client, data):
     message = Message(str(data))

@@ -2,11 +2,10 @@ version: '3'
 services:
   app:
     build: .
+    privileged: true
     restart: always
     devices:
-      - /dev/gpiomem:/dev/gpiomem
+      - "/dev/gpiomem:/dev/gpiomem"
+      - "/dev/mem:/dev/mem"
     environment:
-      - DEVICE_CONNECTION_STRING=<your device connection string>
-
-# docker-compose build
-# docker-compose up -d
+      - CONNECTION_STRING=<insertconnectionstringhere>

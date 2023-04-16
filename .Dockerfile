@@ -1,5 +1,6 @@
-FROM balenalib/raspberry-pi-python
+FROM python:3.9-slim-buster
 
+# Set the working directory to /app
 WORKDIR /app
 
 # Install dependencies
@@ -14,16 +15,20 @@ RUN apt-get update \
 RUN apt-get update && \
     apt-get install -y python-rpi.gpio
 
+# Upgrade PIP
+RUN pip3 install --upgrade pip setuptools wheel 
+
+
+# Install Python packages
 COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
-# Install Adafruit DHT module
-RUN pip3 install Adafruit_DHT
-
+# Copy the Python script
 COPY main.py .
 
 # Set log level to INFO
 ENV LOG_LEVEL=INFO
 
-CMD [ "python3", "./main.py" ]
+# Run the Python script.
+CMD [ "python3", "-u", "main.py" ]
